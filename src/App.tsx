@@ -90,9 +90,9 @@ function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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',
           'HTTP-Referer': window.location.origin,
-          'X-Title': 'Fatwa AI',
-          'Authorization': 'Bearer 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'
+          'X-Title': 'Fatwa AI'
         },
         body: JSON.stringify({
           model: 'google/gemini-2.0-pro-exp-02-05:free',
@@ -132,6 +132,10 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
           ]
         }),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
       
