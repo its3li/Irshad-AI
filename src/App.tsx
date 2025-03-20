@@ -59,18 +59,18 @@ function App() {
     setIsLoading(true);
 
     try {
-      // Corrected fetch URL.  The original URL was for demonstration.
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {  // Replace with actual API endpoint
+      // **Important:** For a production app, you should create a server-side proxy to handle the API request.
+      //  This avoids exposing your API key and handles CORS issues securely.  This example removes the ORG header.
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', // Replace with your actual API key.  This is a placeholder.
-          'HTTP-Referer': '',
-          'X-Title': '',  
-          'OR-Organization': '' 
+          'Authorization': 'Bearer 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', //  Replace with your actual API key.
+          'HTTP-Referer': 'https://fatwa-ai.vercel.app',
+          'X-Title': 'Fatwa AI',
         },
         body: JSON.stringify({
-          model: 'google/gemini-2.0-pro-exp-02-05:free', // Or any other model
+          model: 'google/gemini-2.0-pro-exp-02-05:free',
           messages: [
             {
               role: 'system',
@@ -106,14 +106,19 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
       });
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
+        // Improved error message to help with debugging
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        throw new Error(`API Error: ${response.status} - ${errorData.message || 'Unknown error'}`);
       }
 
       const data = await response.json();
-
+      if (!data.choices || data.choices.length === 0) {
+        throw new Error('Invalid API response: No choices returned.');
+      }
       const aiMessage: Message = {
         id: Date.now().toString(),
-        text: data.choices[0].message.content, // Access the message content correctly.
+        text: data.choices[0].message.content,
         isAi: true,
         timestamp: new Date(),
       };
