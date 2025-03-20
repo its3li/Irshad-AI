@@ -65,9 +65,9 @@ function App() {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer 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', // Replace with your actual API key.  This is a placeholder.
-          'HTTP-Referer': 'https://fatwa-ai.vercel.app', // Replace with your actual referer
-          'X-Title': 'Fatwa AI',  // Replace with your actual title
-          'OR-Organization': 'fatwa-ai' // Replace with your organization
+          'HTTP-Referer': '',
+          'X-Title': '',  
+          'OR-Organization': '' 
         },
         body: JSON.stringify({
           model: 'google/gemini-2.0-pro-exp-02-05:free', // Or any other model
