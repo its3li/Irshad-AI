@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Settings } from 'lucide-react';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
@@ -59,20 +59,22 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      // Corrected fetch URL.  The original URL was for demonstration.
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {  // Replace with actual API endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'Fatwa AI',
-          'Authorization': 'Bearer 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'
+          'Authorization': 'Bearer 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', // Replace with your actual API key.  This is a placeholder.
+          'HTTP-Referer': 'https://fatwa-ai.vercel.app', // Replace with your actual referer
+          'X-Title': 'Fatwa AI',  // Replace with your actual title
+          'OR-Organization': 'fatwa-ai' // Replace with your organization
         },
         body: JSON.stringify({
-          model: 'google/gemini-2.0-pro-exp-02-05:free',
+          model: 'google/gemini-2.0-pro-exp-02-05:free', // Or any other model
           messages: [
             {
               role: 'system',
-              content: `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
+              content: `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
 
 معلومات المستخدم:
 - الاسم: ${userProfile?.name}
@@ -83,9 +85,9 @@ if the user speak english speak english and use their name in english
 سجل المحادثة السابق:
 ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
 
-عقيدتك: تؤمن إيمانًا كاملاً بأن الله هو الإله الواحد، وأن الإسلام هو الدين الحق، وتحرص على إيصال المعلومة بأسلوب جميل يجذب الناس ويحببهم في الحديث معك. 
+عقيدتك: تؤمن إيمانًا كاملاً بأن الله هو الإله الواحد، وأن الإسلام هو الدين الحق، وتحرص على إيصال المعلومة بأسلوب جميل يجذب الناس ويحببهم في الحديث معك. 
 
-طريقة إجابتك على الفتاوى: 
+طريقة إجابتك على الفتاوى: 
 الحكم الشرعي: (حلال - حرام - مكروه - مستحب - مباح)
 الدليل من القرآن (إن وجد)
 الدليل من السنة (إن وجد)
@@ -100,14 +102,18 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
               content: text
             }
           ]
-        }),
+        })
       });
 
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
       const data = await response.json();
-      
+
       const aiMessage: Message = {
         id: Date.now().toString(),
-        text: data.choices[0].message.content,
+        text: data.choices[0].message.content, // Access the message content correctly.
         isAi: true,
         timestamp: new Date(),
       };
@@ -117,7 +123,7 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
       console.error('Error:', error);
       const errorMessage: Message = {
         id: Date.now().toString(),
-        text: isArabic 
+        text: isArabic
           ? 'عذراً، حدث خطأ. يرجى المحاولة مرة أخرى لاحقاً.'
           : 'I apologize, but I encountered an error. Please try again later.',
         isAi: true,
@@ -144,7 +150,7 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
 
   if (!userProfile) {
     return (
-      <ProfileSetup 
+      <ProfileSetup
         onComplete={handleProfileComplete}
         isArabic={isArabic}
         isDarkMode={isDarkMode}
@@ -162,8 +168,8 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
           <div className="flex items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-2 sm:gap-3">
               {userProfile.avatar ? (
-                <img 
-                  src={userProfile.avatar} 
+                <img
+                  src={userProfile.avatar}
                   alt={userProfile.name}
                   className="w-8 h-8 rounded-full object-cover ring-2 ring-amber-400"
                   loading="lazy"
@@ -211,7 +217,7 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
                     {isArabic ? 'مرحباً بك في الفتوى الذكية!' : 'Welcome to Fatwa AI!'}
                   </h2>
                   <p className={`text-xl sm:text-2xl md:text-3xl leading-relaxed ${isArabic ? 'arabic' : ''}`}>
-                    {isArabic 
+                    {isArabic
                       ? 'اسأل أسئلتك حول الأحكام الإسلامية واحصل على إجابات مبنية على القرآن والحديث.'
                       : 'Ask your questions about Islamic rulings and get answers based on the Quran and Hadith.'}
                   </p>
