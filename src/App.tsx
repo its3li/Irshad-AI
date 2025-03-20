@@ -3,10 +3,7 @@ import { Settings } from 'lucide-react';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { ProfileSetup, UserProfile } from './components/ProfileSetup';
-import { toHijri } from 'hijri-converter';
-
-// Lazy load components for better performance
-const SettingsPopup = lazy(() => import('./components/SettingsPopup').then(module => ({ default: module.SettingsPopup })));
+import { SettingsPopup } from './components/SettingsPopup';
 
 interface Message {
   id: string;
@@ -29,13 +26,6 @@ function App() {
     return saved ? JSON.parse(saved) : null;
   });
 
-  // SEO-optimized page title
-  useEffect(() => {
-    document.title = isArabic 
-      ? 'الفتوى الذكية - مساعد الفتاوى الإسلامية المدعوم بالذكاء الاصطناعي'
-      : 'Fatwa AI - Islamic Rulings Assistant Powered by Artificial Intelligence';
-  }, [isArabic]);
-
   useEffect(() => {
     localStorage.setItem('chatHistory', JSON.stringify(messages));
   }, [messages]);
@@ -57,21 +47,6 @@ function App() {
     }
   };
 
-  const getCurrentDates = () => {
-    const now = new Date();
-    const hijri = toHijri(now.getFullYear(), now.getMonth() + 1, now.getDate());
-    
-    const gregorianDate = now.toLocaleDateString('ar-SA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-    
-    const hijriDate = `${hijri.hDay} ${['محرم', 'صفر', 'ربيع الأول', 'ربيع الثاني', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'][hijri.hMonth - 1]} ${hijri.hYear}`;
-    
-    return { gregorianDate, hijriDate };
-  };
-
   const handleSendMessage = async (text: string) => {
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -84,15 +59,13 @@ function App() {
     setIsLoading(true);
 
     try {
-      const { gregorianDate, hijriDate } = getCurrentDates();
-      
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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',
           'HTTP-Referer': window.location.origin,
-          'X-Title': 'Fatwa AI'
+          'X-Title': 'Fatwa AI',
+          'Authorization': 'Bearer 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'
         },
         body: JSON.stringify({
           model: 'google/gemini-2.0-pro-exp-02-05:free',
@@ -100,9 +73,6 @@ function App() {
             {
               role: 'system',
               content: `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
-
-التاريخ الميلادي: ${gregorianDate}
-التاريخ الهجري: ${hijriDate}
 
 معلومات المستخدم:
 - الاسم: ${userProfile?.name}
@@ -132,10 +102,6 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
           ]
         }),
       });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
 
       const data = await response.json();
       
@@ -223,21 +189,17 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
         </div>
       </header>
 
-      <Suspense fallback={null}>
-        {isSettingsOpen && (
-          <SettingsPopup
-            isOpen={isSettingsOpen}
-            onClose={() => setIsSettingsOpen(false)}
-            onToggleTheme={toggleTheme}
-            onToggleLanguage={toggleLanguage}
-            onClearChat={handleClearChat}
-            isDarkMode={isDarkMode}
-            isArabic={isArabic}
-            userProfile={userProfile}
-            onUpdateProfile={handleUpdateProfile}
-          />
-        )}
-      </Suspense>
+      <SettingsPopup
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        onToggleTheme={toggleTheme}
+        onToggleLanguage={toggleLanguage}
+        onClearChat={handleClearChat}
+        isDarkMode={isDarkMode}
+        isArabic={isArabic}
+        userProfile={userProfile}
+        onUpdateProfile={handleUpdateProfile}
+      />
 
       <main className="flex-1 pt-16 sm:pt-20">
         <div className="h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] flex flex-col">
