@@ -4,7 +4,6 @@ import { ChatMessage } from './components/ChatMessage';
 import { ChatInput } from './components/ChatInput';
 import { ProfileSetup, UserProfile } from './components/ProfileSetup';
 import { SettingsPopup } from './components/SettingsPopup';
-import OpenAI from 'openai';
 
 interface Message {
   id: string;
@@ -12,12 +11,6 @@ interface Message {
   isAi: boolean;
   timestamp: Date;
 }
-
-const client = new OpenAI({ 
-  baseURL: "https://models.inference.ai.azure.com",
-  apiKey: "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",
-  dangerouslyAllowBrowser: true
-});
 
 function App() {
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -66,11 +59,22 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await client.chat.completions.create({
-        messages: [
-          {
-            role: 'system',
-            content: `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
+      // **Important:** For a production app, you should create a server-side proxy to handle the API request.
+      //  This avoids exposing your API key and handles CORS issues securely.  This example removes the ORG header.
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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', //  Replace with your actual API key.
+          'HTTP-Referer': 'https://fatwa-ai.vercel.app',
+          'X-Title': 'Fatwa AI',
+        },
+        body: JSON.stringify({
+          model: 'google/gemini-2.0-pro-exp-02-05:free',
+          messages: [
+            {
+              role: 'system',
+              content: `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
 
 معلومات المستخدم:
 - الاسم: ${userProfile?.name}
@@ -81,9 +85,9 @@ if the user speak english speak english and use their name in english
 سجل المحادثة السابق:
 ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
 
-عقيدتك: تؤمن إيمانًا كاملاً بأن الله هو الإله الواحد، وأن الإسلام هو الدين الحق، وتحرص على إيصال المعلومة بأسلوب جميل يجذب الناس ويحببهم في الحديث معك. 
+عقيدتك: تؤمن إيمانًا كاملاً بأن الله هو الإله الواحد، وأن الإسلام هو الدين الحق، وتحرص على إيصال المعلومة بأسلوب جميل يجذب الناس ويحببهم في الحديث معك. 
 
-طريقة إجابتك على الفتاوى: 
+طريقة إجابتك على الفتاوى: 
 الحكم الشرعي: (حلال - حرام - مكروه - مستحب - مباح)
 الدليل من القرآن (إن وجد)
 الدليل من السنة (إن وجد)
@@ -92,21 +96,29 @@ ${messages.map(m => `${m.isAi ? 'AI' : 'User'}: ${m.text}`).join('\n')}
 الاجتهاد والتحليل الشخصي: إذا لم يوجد نص صريح، تحلّل المسألة بناءً على القواعد الفقهية ومقاصد الشريعة مع تقديم تفسير واضح لحكمك بأسلوب لطيف وسهل الفهم.
 
 أسلوبك: تستخدم لغة راقية ومحببة تجعل السائل يشعر بالراحة. تتجنب الشدة والغلظة، وتحرص على اللطف في الردّ. توضّح الأحكام بأسلوب مقنع وسلس، مع التركيز على الحكمة والمقصد من التشريع. تشجّع السائل على البحث والتفكر، وتختم إجابتك بدعاء طيب أو كلمة مشجعة.`
-          },
-          {
-            role: 'user',
-            content: text
-          }
-        ],
-        temperature: 1.0,
-        top_p: 1.0,
-        max_tokens: 1000,
-        model: "gpt-4o"
+            },
+            {
+              role: 'user',
+              content: text
+            }
+          ]
+        })
       });
 
+      if (!response.ok) {
+        // Improved error message to help with debugging
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        throw new Error(`API Error: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+
+      const data = await response.json();
+      if (!data.choices || data.choices.length === 0) {
+        throw new Error('Invalid API response: No choices returned.');
+      }
       const aiMessage: Message = {
         id: Date.now().toString(),
-        text: response.choices[0].message.content,
+        text: data.choices[0].message.content,
         isAi: true,
         timestamp: new Date(),
       };
