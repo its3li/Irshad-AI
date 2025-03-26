@@ -1,5 +1,5 @@
 {
-  "name": "fatwa-genie",
+  "name": "fatwa-AI",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,7 +17,8 @@
     "tailwind-merge": "^2.2.1",
     "react-markdown": "^9.0.1",
     "remark-gfm": "^4.0.0",
-    "hijri-converter": "^1.1.1"
+    "hijri-converter": "^1.1.1",
+    "openai": "^4.28.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
