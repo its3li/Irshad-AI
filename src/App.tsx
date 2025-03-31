@@ -65,7 +65,7 @@ function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', //  Replace with your actual API key.
+          'Authorization': 'Bearer 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', //  Replace with your actual API key.
           'HTTP-Referer': 'https://fatwa-ai.vercel.app',
           'X-Title': 'Fatwa AI',
         },
