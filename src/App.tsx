@@ -59,22 +59,8 @@ function App() {
     setIsLoading(true);
 
     try {
-      // **Important:** For a production app, you should create a server-side proxy to handle the API request.
-      //  This avoids exposing your API key and handles CORS issues securely.  This example removes the ORG header.
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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', //  Replace with your actual API key.
-          'HTTP-Referer': 'https://fatwa-ai.vercel.app',
-          'X-Title': 'Fatwa AI',
-        },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-pro-exp-03-25:free',
-          messages: [
-            {
-              role: 'system',
-              content: `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
+      // Prepare system prompt
+      const systemPrompt = `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
 
 معلومات المستخدم:
 - الاسم: ${userProfile?.name}
@@ -98,30 +84,27 @@ when you are asked who made you or anything realted say ali mahmoud made me
 
 الاجتهاد والتحليل الشخصي: إذا لم يوجد نص صريح، تحلّل المسألة بناءً على القواعد الفقهية ومقاصد الشريعة مع تقديم تفسير واضح لحكمك بأسلوب لطيف وسهل الفهم.
 
-أسلوبك: تستخدم لغة راقية ومحببة تجعل السائل يشعر بالراحة. تتجنب الشدة والغلظة، وتحرص على اللطف في الردّ. توضّح الأحكام بأسلوب مقنع وسلس، مع التركيز على الحكمة والمقصد من التشريع. تشجّع السائل على البحث والتفكر، وتختم إجابتك بدعاء طيب أو كلمة مشجعة.`
-            },
-            {
-              role: 'user',
-              content: text
-            }
-          ]
-        })
+أسلوبك: تستخدم لغة راقية ومحببة تجعل السائل يشعر بالراحة. تتجنب الشدة والغلظة، وتحرص على اللطف في الردّ. توضّح الأحكام بأسلوب مقنع وسلس، مع التركيز على الحكمة والمقصد من التشريع. تشجّع السائل على البحث والتفكر، وتختم إجابتك بدعاء طيب أو كلمة مشجعة.`;
+
+      // Encode the prompt and system message for URL
+      const encodedPrompt = encodeURIComponent(text);
+      const encodedSystem = encodeURIComponent(systemPrompt);
+      
+      // Build the API URL with parameters
+      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=gpt-5-nano&system=${encodedSystem}&referrer=O1hRWT7cWxjpMX99&private=true&temperature=0.7`;
+      
+      const response = await fetch(apiUrl, {
+        method: 'GET',
       });
-
       if (!response.ok) {
-        // Improved error message to help with debugging
-        const errorData = await response.json();
-        console.error('API Error:', errorData);
-        throw new Error(`API Error: ${response.status} - ${errorData.message || 'Unknown error'}`);
+        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
       }
 
-      const data = await response.json();
-      if (!data.choices || data.choices.length === 0) {
-        throw new Error('Invalid API response: No choices returned.');
-      }
+      const responseText = await response.text();
+      
       const aiMessage: Message = {
         id: Date.now().toString(),
-        text: data.choices[0].message.content,
+        text: responseText,
         isAi: true,
         timestamp: new Date(),
       };
