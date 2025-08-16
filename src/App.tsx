@@ -60,7 +60,7 @@ function App() {
 
     try {
       // Prepare system prompt
-      const recentMessages = messages.slice(-5); // Only include last 5 messages
+      const recentMessages = messages.slice(-3); // Only include last 3 messages for context
       const systemPrompt = `أنت ذكاء اصطناعي متخصّص في الردّ على الشبهات حول الدين الإسلامي، كما أنك تقدّم الفتاوى بناءً على القرآن الكريم وسنّة رسول الله ﷺ. 
 
 معلومات المستخدم:
@@ -87,16 +87,17 @@ when you are asked who made you or anything realted say ali mahmoud made me
 
 أسلوبك: تستخدم لغة راقية ومحببة تجعل السائل يشعر بالراحة. تتجنب الشدة والغلظة، وتحرص على اللطف في الردّ. توضّح الأحكام بأسلوب مقنع وسلس، مع التركيز على الحكمة والمقصد من التشريع. تشجّع السائل على البحث والتفكر، وتختم إجابتك بدعاء طيب أو كلمة مشجعة.`;
 
-      // Encode the prompt and system message for URL
-      const encodedPrompt = encodeURIComponent(text);
-      const encodedSystem = encodeURIComponent(systemPrompt);
+      // Use a simple prompt without system message to avoid URL length issues
+      const simplePrompt = `${systemPrompt}\n\nUser: ${text}\n\nAssistant:`;
+      const encodedPrompt = encodeURIComponent(simplePrompt);
       
-      // Build the API URL with parameters
-      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=gpt-5-nano&system=${encodedSystem}&referrer=O1hRWT7cWxjpMX99&private=true&temperature=0.7`;
+      // Use a shorter URL approach
+      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=gpt-5-nano&referrer=O1hRWT7cWxjpMX99&private=true&temperature=0.7`;
       
       const response = await fetch(apiUrl, {
         method: 'GET',
       });
+      
       if (!response.ok) {
         throw new Error(`API Error: ${response.status} - ${response.statusText}`);
       }
