@@ -92,7 +92,7 @@ when you are asked who made you or anything realted say ali mahmoud made me
       const encodedPrompt = encodeURIComponent(simplePrompt);
       
       // Use a shorter URL approach
-      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=openai-large&referrer=O1hRWT7cWxjpMX99&private=true&temperature=0.7`;
+      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=openai&referrer=O1hRWT7cWxjpMX99&private=true&temperature=0.7`;
       
       const response = await fetch(apiUrl, {
         method: 'GET',
