@@ -212,7 +212,6 @@ ${recentMessages.map(m => `${m.isAi ? 'IrshadAI' : 'User'}: ${m.text}`).join('\n
               {isArabic ? 'إرشاد' : 'IrshadAI'}
             </h1>
           </div>
-          </h1>
           <div className="flex items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-2 sm:gap-3">
               {userProfile.avatar ? (
