@@ -1,4 +1,4 @@
-![IrshadAI Banner](./public/banner.jpeg)
+![IrshadAI Banner](./public/banner.png)
 
 # إرشاد | IrshadAI
 
