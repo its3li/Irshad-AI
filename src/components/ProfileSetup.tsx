@@ -52,7 +52,6 @@ export function ProfileSetup({ onComplete, isArabic, isDarkMode }: ProfileSetupP
               {isArabic ? 'إرشاد' : 'IrshadAI'}
             </h1>
           </div>
-          </h1>
           <p className={`text-sm sm:text-base ${isArabic ? 'arabic' : ''} ${isDarkMode ? 'text-brown-300' : 'text-brown-600'}`}>
             {isArabic 
               ? 'تم تطويره بواسطة علي محمود وأمير محمود ويوسف حاتم' 
