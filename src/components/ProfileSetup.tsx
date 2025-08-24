@@ -44,15 +44,21 @@ export function ProfileSetup({ onComplete, isArabic, isDarkMode }: ProfileSetupP
     <div className={`min-h-screen flex flex-col items-center justify-center p-4 ${isDarkMode ? 'bg-brown-900' : 'bg-brown-50'}`}>
       <div className={`w-full max-w-md ${isDarkMode ? 'bg-brown-800' : 'bg-white'} rounded-2xl p-6 sm:p-8 shadow-xl`}>
         <div className="text-center mb-8">
-          <h1 className={`text-3xl sm:text-4xl font-bold mb-4 ${isArabic ? 'arabic-title' : ''} ${isDarkMode ? 'text-brown-50' : 'text-brown-900'}`}>
-            {isArabic ? 'الفتوى الذكية' : 'Fatwa AI'}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300`}>
+              <span className="text-brown-900 font-bold text-2xl">إ</span>
+            </div>
+            <h1 className={`text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent ${isArabic ? 'arabic-title' : ''}`}>
+              {isArabic ? 'إرشاد' : 'IrshadAI'}
+            </h1>
+          </div>
           </h1>
           <p className={`text-sm sm:text-base ${isArabic ? 'arabic' : ''} ${isDarkMode ? 'text-brown-300' : 'text-brown-600'}`}>
             {isArabic 
               ? 'تم تطويره بواسطة علي محمود وأمير محمود ويوسف حاتم' 
               : 'Developed by Ali Mahmoud, Ameer Mahmoud & Yousef Hatim'}
           </p>
-          <div className={`mt-4 p-4 rounded-xl ${isDarkMode ? 'bg-brown-700' : 'bg-brown-100'} flex items-start gap-3`}>
+          <div className={`mt-6 p-4 rounded-xl ${isDarkMode ? 'bg-brown-700/50 border border-brown-600/50' : 'bg-brown-100/50 border border-brown-200/50'} flex items-start gap-3 backdrop-blur-sm`}>
             <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
             <p className={`text-sm ${isArabic ? 'arabic text-right' : ''} ${isDarkMode ? 'text-brown-200' : 'text-brown-600'}`}>
               {isArabic
@@ -132,7 +138,7 @@ export function ProfileSetup({ onComplete, isArabic, isDarkMode }: ProfileSetupP
 
           <button
             type="submit"
-            className={`w-full py-3 px-4 rounded-xl text-white font-medium transition-all ${
+            className={`w-full py-3 px-4 rounded-xl text-white font-medium transition-all transform hover:scale-105 active:scale-95 ${
               isDarkMode 
                 ? 'bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700' 
                 : 'bg-gradient-to-r from-brown-600 to-brown-700 hover:from-brown-700 hover:to-brown-800'

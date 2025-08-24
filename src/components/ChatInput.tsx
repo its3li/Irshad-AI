@@ -58,6 +58,7 @@ export function ChatInput({ onSendMessage, disabled, isDarkMode, isArabic }: Cha
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={isArabic ? 'اكتب سؤالك حول الأحكام الإسلامية...' : 'Ask your question about Islamic rulings...'}
+          placeholder={isArabic ? 'اكتب سؤالك حول الإرشاد الإسلامي...' : 'Ask your question about Islamic guidance...'}
           className={`chat-input flex-1 rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 resize-none overflow-y-auto ${
             isDarkMode 
               ? 'bg-brown-700 text-brown-50 placeholder-brown-400/50 focus:ring-amber-400' 

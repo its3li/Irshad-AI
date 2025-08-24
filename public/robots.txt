@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemaps
-Sitemap: https://fatwa-ai.vercel.app/sitemap.xml
+Sitemap: https://irshadai.vercel.app/sitemap.xml

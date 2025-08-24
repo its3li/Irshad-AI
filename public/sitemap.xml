@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://fatwa-ai.vercel.app/</loc>
+    <loc>https://irshadai.vercel.app/</loc>
     <lastmod>2025-03-19</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link 
       rel="alternate"
       hreflang="ar"
-      href="https://fatwa-ai.vercel.app/?lang=ar"/>
+      href="https://irshadai.vercel.app/?lang=ar"/>
     <xhtml:link 
       rel="alternate"
       hreflang="en"
-      href="https://fatwa-ai.vercel.app/?lang=en"/>
+      href="https://irshadai.vercel.app/?lang=en"/>
   </url>
 </urlset>

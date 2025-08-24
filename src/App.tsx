@@ -204,8 +204,14 @@ ${recentMessages.map(m => `${m.isAi ? 'IrshadAI' : 'User'}: ${m.text}`).join('\n
     <div className={`min-h-screen flex flex-col ${isDarkMode ? 'bg-brown-900' : 'bg-brown-50'}`}>
       <header className={`${isDarkMode ? 'bg-brown-800' : 'bg-brown-100'} py-3 sm:py-4 px-3 sm:px-4 shadow-lg fixed w-full z-10`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className={`text-xl sm:text-3xl font-bold ${isArabic ? 'arabic-title' : ''} ${isDarkMode ? 'text-brown-50' : 'text-brown-900'}`}>
-            {isArabic ? 'الفتوى الذكية' : 'Fatwa AI'}
+          <div className="flex items-center gap-3">
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300`}>
+              <span className="text-brown-900 font-bold text-lg sm:text-xl">إ</span>
+            </div>
+            <h1 className={`text-xl sm:text-3xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent ${isArabic ? 'arabic-title' : ''}`}>
+              {isArabic ? 'إرشاد' : 'IrshadAI'}
+            </h1>
+          </div>
           </h1>
           <div className="flex items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-2 sm:gap-3">
@@ -256,22 +262,23 @@ ${recentMessages.map(m => `${m.isAi ? 'IrshadAI' : 'User'}: ${m.text}`).join('\n
               <div className={`flex flex-col items-center justify-center h-full ${isDarkMode ? 'text-brown-300' : 'text-brown-600'} px-4 sm:px-6 md:px-8 text-center space-y-8`}>
                 <div className="max-w-3xl w-full">
                   <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-6 ${isArabic ? 'arabic-title' : ''} ${isDarkMode ? 'text-amber-400' : 'text-brown-800'}`}>
-                    {isArabic ? 'مرحباً بك في الفتوى الذكية!' : 'Welcome to Fatwa AI!'}
+                    {isArabic ? 'مرحباً بك في إرشاد!' : 'Welcome to IrshadAI!'}
                   </h2>
                   <p className={`text-xl sm:text-2xl md:text-3xl leading-relaxed ${isArabic ? 'arabic' : ''}`}>
                     {isArabic
-                      ? 'اسأل أسئلتك حول الأحكام الإسلامية واحصل على إجابات مبنية على القرآن والحديث.'
-                      : 'Ask your questions about Islamic rulings and get answers based on the Quran and Hadith.'}
+                      ? 'اسأل أسئلتك حول الإرشاد الإسلامي واحصل على إجابات مبنية على القرآن والحديث.'
+                      : 'Ask your questions about Islamic guidance and get answers based on the Quran and Hadith.'}
                   </p>
                   <div className="mt-8 space-y-4 text-left rtl:text-right">
                     <h3 className={`text-xl font-semibold ${isArabic ? 'arabic' : ''}`}>
-                      {isArabic ? 'مميزات الفتوى الذكية:' : 'Fatwa AI Features:'}
+                      {isArabic ? 'مميزات إرشاد:' : 'IrshadAI Features:'}
                     </h3>
                     <ul className={`list-disc list-inside space-y-2 ${isArabic ? 'arabic' : ''}`}>
                       <li>{isArabic ? 'إجابات فورية مبنية على القرآن والسنة' : 'Instant answers based on Quran and Sunnah'}</li>
                       <li>{isArabic ? 'دعم اللغتين العربية والإنجليزية' : 'Bilingual support (Arabic & English)'}</li>
                       <li>{isArabic ? 'واجهة سهلة الاستخدام' : 'User-friendly interface'}</li>
-                      <li>{isArabic ? 'تحليل شامل للمسائل الفقهية' : 'Comprehensive analysis of Islamic jurisprudence'}</li>
+                      <li>{isArabic ? 'إرشاد شامل في المسائل الإسلامية' : 'Comprehensive guidance on Islamic matters'}</li>
+                      <li>{isArabic ? 'تصميم عصري وسهل الاستخدام' : 'Modern and intuitive design'}</li>
                     </ul>
                   </div>
                 </div>
@@ -292,7 +299,7 @@ ${recentMessages.map(m => `${m.isAi ? 'IrshadAI' : 'User'}: ${m.text}`).join('\n
             {isLoading && (
               <div className={`flex items-center gap-2 ${isDarkMode ? 'text-brown-300' : 'text-brown-600'} px-4`}>
                 <div className={`animate-pulse ${isArabic ? 'arabic' : ''}`}>
-                  {isArabic ? 'اذكر الله إلى أن يتم إنشاء الفتوى' : 'Remember Allah while the fatwa is being generated'}
+                  {isArabic ? 'اذكر الله إلى أن يتم إنشاء الإرشاد' : 'Remember Allah while the guidance is being generated'}
                 </div>
               </div>
             )}

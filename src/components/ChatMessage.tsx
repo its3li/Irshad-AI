@@ -18,8 +18,8 @@ export function ChatMessage({ message, isAi, timestamp, isDarkMode, isArabic, us
 
   const handleCopy = async () => {
     const attribution = isArabic 
-      ? '\n\nفتوى من الفتوى الذكية - fatwa-ai.vercel.app'
-      : '\n\nFatwa by Fatwa AI - fatwa-ai.vercel.app';
+      ? '\n\nإرشاد من إرشاد - irshadai.vercel.app'
+      : '\n\nGuidance by IrshadAI - irshadai.vercel.app';
     
     await navigator.clipboard.writeText(message + attribution);
     setIsCopied(true);

@@ -188,7 +188,7 @@ export function SettingsPopup({
               ))}
             </div>
             <p className={`text-[10px] text-center mt-1 ${isArabic ? 'arabic' : ''} ${isDarkMode ? 'text-brown-500' : 'text-brown-400'}`}>
-              {isArabic ? 'مطورو الفتوى الذكية' : 'Fatwa AI Developers'}
+              {isArabic ? 'مطورو إرشاد' : 'IrshadAI Developers'}
             </p>
           </div>
         </div>
