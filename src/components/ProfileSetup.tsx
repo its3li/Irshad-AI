@@ -45,9 +45,11 @@ export function ProfileSetup({ onComplete, isArabic, isDarkMode }: ProfileSetupP
       <div className={`w-full max-w-md ${isDarkMode ? 'bg-brown-800' : 'bg-white'} rounded-2xl p-6 sm:p-8 shadow-xl`}>
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300`}>
-              <span className="text-brown-900 font-bold text-2xl">إ</span>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="IrshadAI Logo" 
+              className="w-12 h-12 rounded-xl shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300 object-contain"
+            />
             <h1 className={`text-3xl sm:text-4xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent ${isArabic ? 'arabic-title' : ''}`}>
               {isArabic ? 'إرشاد' : 'IrshadAI'}
             </h1>

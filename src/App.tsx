@@ -205,9 +205,11 @@ ${recentMessages.map(m => `${m.isAi ? 'IrshadAI' : 'User'}: ${m.text}`).join('\n
       <header className={`${isDarkMode ? 'bg-brown-800' : 'bg-brown-100'} py-3 sm:py-4 px-3 sm:px-4 shadow-lg fixed w-full z-10`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300`}>
-              <span className="text-brown-900 font-bold text-lg sm:text-xl">إ</span>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="IrshadAI Logo" 
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300 object-contain"
+            />
             <h1 className={`text-xl sm:text-3xl font-bold bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 bg-clip-text text-transparent ${isArabic ? 'arabic-title' : ''}`}>
               {isArabic ? 'إرشاد' : 'IrshadAI'}
             </h1>
