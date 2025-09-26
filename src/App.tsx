@@ -141,7 +141,7 @@ ${recentMessages.map(m => `${m.isAi ? 'IrshadAI' : 'User'}: ${m.text}`).join('\n
       const encodedPrompt = encodeURIComponent(simplePrompt);
       
       // Use a shorter URL approach
-      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=gpt-5-nano&token=O1hRWT7cWxjpMX99&private=true&temperature=1`;
+      const apiUrl = `https://text.pollinations.ai/${encodedPrompt}?model=gpt-5-nano&token=1HQSFKmyEcBaIBQS&private=true&temperature=1`;
       
       const response = await fetch(apiUrl, {
         method: 'GET',
